@@ -65,6 +65,40 @@ namespace SkiaElfo.Pages
                 // white3
                 canvas.DrawRect(whiteSquare3, paint);
 
+                //linee bianche
+                using (var path = new SKPath())
+                {
+                    path.MoveTo(topLeft.X, topLeft.Y + squareSize);
+                    path.LineTo(topLeft.X + (squareSize * 3f), topLeft.Y + squareSize);
+
+                    path.MoveTo(topLeft.X + squareSize, topLeft.Y);
+                    path.LineTo(topLeft.X + squareSize, topLeft.Y +(squareSize * 2f));
+
+                    path.MoveTo(topLeft.X + (squareSize * 2f), topLeft.Y);
+                    path.LineTo(topLeft.X + (squareSize * 2f), topLeft.Y + (squareSize * 2f));
+
+                    canvas.DrawPath(path, paint);
+                }
+
+                paint.Color = SKColors.Black;
+
+                //linee nere
+                using (var path = new SKPath())
+                {
+                    path.MoveTo(topLeft.X, topLeft.Y + (squareSize * 2f));
+                    path.LineTo(topLeft.X, topLeft.Y + (squareSize * 3f));
+                    path.LineTo(topLeft.X + (squareSize * 3f), topLeft.Y + (squareSize * 3f));
+                    path.LineTo(topLeft.X + (squareSize * 3f), topLeft.Y + (squareSize * 2f));
+
+                    path.MoveTo(topLeft.X + squareSize, topLeft.Y + (squareSize * 2f));
+                    path.LineTo(topLeft.X + squareSize, topLeft.Y + (squareSize * 3f));
+
+                    path.MoveTo(topLeft.X + (squareSize * 2f), topLeft.Y + (squareSize * 2f));
+                    path.LineTo(topLeft.X + (squareSize * 2f), topLeft.Y + (squareSize * 3f));
+
+                    canvas.DrawPath(path, paint);
+                }
+
                 // save
                 canvas.Save();
 
@@ -83,6 +117,8 @@ namespace SkiaElfo.Pages
                 //paint.Color = XamLtBlue;
                 //canvas.DrawRect(rightRect, paint);
             }
+
+            
         }
     }
 }
