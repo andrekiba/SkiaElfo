@@ -8,6 +8,8 @@ namespace SkiaElfo.Pages
         private static readonly SKColor Orange1 = new SKColor(255, 200, 0);
         private static readonly SKColor Orange2 = new SKColor(255, 150, 0);
         private static readonly SKColor Orange3 = new SKColor(255, 100, 0);
+        private static readonly SKColor Green = new SKColor(0x77, 0xd0, 0x65);
+        private static readonly SKColor Purple = new SKColor(0xb4, 0x55, 0xb6);
 
         public ElfoLogoPage()
         {
@@ -20,26 +22,35 @@ namespace SkiaElfo.Pages
             var squareSize = totalSize / 3f;
             var topLeft = new SKPoint((width - totalSize) / 2f, (height - totalSize) / 2f);
 
-            var blackSquare1 = SKRect.Create(topLeft.X, topLeft.Y, squareSize, squareSize);
-            var blackSquare2 = SKRect.Create(topLeft.X + squareSize, topLeft.Y, squareSize, squareSize);
-            var blackSquare3 = SKRect.Create(topLeft.X + (squareSize * 2), topLeft.Y, squareSize, squareSize);
-            var blackSquare4 = SKRect.Create(topLeft.X, topLeft.Y + squareSize, squareSize, squareSize);
-            var blackSquare5 = SKRect.Create(topLeft.X + squareSize, topLeft.Y + squareSize, squareSize, squareSize);
-            var blackSquare6 = SKRect.Create(topLeft.X + (squareSize * 2), topLeft.Y + squareSize, squareSize, squareSize);
+            var p1 = new SKPoint((width - totalSize) / 2f, (height - totalSize) / 2f);
+            var p2 = new SKPoint(p1.X + squareSize, p1.Y);
+            var p3 = new SKPoint(p2.X + squareSize, p2.Y);
 
-            var whiteSquare1 = SKRect.Create(topLeft.X, topLeft.Y + (squareSize * 2), squareSize, squareSize);
-            var whiteSquare2 = SKRect.Create(topLeft.X + squareSize, topLeft.Y + (squareSize * 2), squareSize, squareSize);
-            var whiteSquare3 = SKRect.Create(topLeft.X + (squareSize * 2), topLeft.Y + (squareSize * 2), squareSize, squareSize);
+            var p4 = new SKPoint(p1.X, p1.Y + squareSize);
+            var p5 = new SKPoint(p4.X + squareSize, p4.Y);
+            var p6 = new SKPoint(p5.X + squareSize, p5.Y);
 
-            //var rightRect = SKRect.Create(center.X + size / 2f, center.Y, size, size);
+            var p7 = new SKPoint(p1.X, p4.Y + squareSize);
+            var p8 = new SKPoint(p7.X + squareSize, p7.Y);
+            var p9 = new SKPoint(p8.X + squareSize, p8.Y);
 
-            // draw this at the current location / transformation
-            //var rotatedRect = SKRect.Create(0f, 0f, size, size);
+            var blackSquare1 = SKRect.Create(p1.X, p1.Y, squareSize, squareSize);
+            var blackSquare2 = SKRect.Create(p2.X, p2.Y, squareSize, squareSize);
+            var blackSquare3 = SKRect.Create(p3.X, p3.Y, squareSize, squareSize);
+            var blackSquare4 = SKRect.Create(p4.X, p4.Y, squareSize, squareSize);
+            var blackSquare5 = SKRect.Create(p5.X, p5.Y, squareSize, squareSize);
+            var blackSquare6 = SKRect.Create(p6.X, p6.Y, squareSize, squareSize);
+            var orangeSquare1 = SKRect.Create(p7.X, p7.Y, squareSize, squareSize);
+            var whiteSquare1 = SKRect.Create(p8.X, p8.Y, squareSize, squareSize);
+            var whiteSquare2 = SKRect.Create(p9.X, p9.Y, squareSize, squareSize);
 
             using (var paint = new SKPaint())
             {
                 paint.IsAntialias = true;
-                canvas.Clear(SKColors.BlueViolet);
+                paint.StrokeCap = SKStrokeCap.Square;
+                paint.StrokeWidth = 3;
+
+                canvas.Clear(Green);
 
                 paint.Color = SKColors.Black;
                 
@@ -56,26 +67,30 @@ namespace SkiaElfo.Pages
                 // black6
                 canvas.DrawRect(blackSquare6, paint);
 
-                paint.Color = SKColors.White;
+                paint.Color = Orange1;
+                // orange1
+                canvas.DrawRect(orangeSquare1, paint);
 
+                paint.Color = SKColors.White;
                 // white1
                 canvas.DrawRect(whiteSquare1, paint);
                 // white2
                 canvas.DrawRect(whiteSquare2, paint);
-                // white3
-                canvas.DrawRect(whiteSquare3, paint);
 
+                //setto stroke per poter disegnare le linee
+                paint.IsStroke = true;
+                
                 //linee bianche
                 using (var path = new SKPath())
                 {
-                    path.MoveTo(topLeft.X, topLeft.Y + squareSize);
-                    path.LineTo(topLeft.X + (squareSize * 3f), topLeft.Y + squareSize);
+                    path.MoveTo(p4.X, p4.Y);
+                    path.LineTo(p6.X + squareSize, p6.Y);
 
-                    path.MoveTo(topLeft.X + squareSize, topLeft.Y);
-                    path.LineTo(topLeft.X + squareSize, topLeft.Y +(squareSize * 2f));
+                    path.MoveTo(p2.X, p2.Y);
+                    path.LineTo(p8.X, p8.Y);
 
-                    path.MoveTo(topLeft.X + (squareSize * 2f), topLeft.Y);
-                    path.LineTo(topLeft.X + (squareSize * 2f), topLeft.Y + (squareSize * 2f));
+                    path.MoveTo(p3.X, p3.Y);
+                    path.LineTo(p9.X, p9.Y);
 
                     canvas.DrawPath(path, paint);
                 }
@@ -85,40 +100,35 @@ namespace SkiaElfo.Pages
                 //linee nere
                 using (var path = new SKPath())
                 {
-                    path.MoveTo(topLeft.X, topLeft.Y + (squareSize * 2f));
-                    path.LineTo(topLeft.X, topLeft.Y + (squareSize * 3f));
-                    path.LineTo(topLeft.X + (squareSize * 3f), topLeft.Y + (squareSize * 3f));
-                    path.LineTo(topLeft.X + (squareSize * 3f), topLeft.Y + (squareSize * 2f));
+                    path.MoveTo(p8.X, p8.Y);
+                    path.LineTo(p8.X, p8.Y + squareSize);
 
-                    path.MoveTo(topLeft.X + squareSize, topLeft.Y + (squareSize * 2f));
-                    path.LineTo(topLeft.X + squareSize, topLeft.Y + (squareSize * 3f));
-
-                    path.MoveTo(topLeft.X + (squareSize * 2f), topLeft.Y + (squareSize * 2f));
-                    path.LineTo(topLeft.X + (squareSize * 2f), topLeft.Y + (squareSize * 3f));
+                    path.MoveTo(p9.X, p9.Y);
+                    path.LineTo(p9.X, p9.Y + squareSize);
 
                     canvas.DrawPath(path, paint);
                 }
 
-                // save
+                //tolgo stroke
+                paint.IsStroke = false;
+
+                //disegno i 2 quadrati colorati ruotati
                 canvas.Save();
 
-                // transform
-                //canvas.Translate(width / 2f, center.Y);
-                //canvas.RotateDegrees(45);
+                paint.Color = Orange2;
+                var orangeSquare2 = SKRect.Create(0, 0, squareSize, squareSize);
+                canvas.Translate(p8.X - 10, p8.Y + 10);
+                canvas.RotateDegrees(-15);
+                canvas.DrawRect(orangeSquare2, paint);
+                canvas.Restore();
 
-                // draw
-                //paint.Color = XamGreen;
-                //canvas.DrawRect(rotatedRect, paint);
-
-                // undo transform / restore
-                //canvas.Restore();
-
-                // draw
-                //paint.Color = XamLtBlue;
-                //canvas.DrawRect(rightRect, paint);
-            }
-
-            
+                paint.Color = Orange3;
+                var orangeSquare3 = SKRect.Create(0, 0, squareSize, squareSize);
+                canvas.Translate(p9.X, p9.Y + 10);
+                canvas.RotateDegrees(-30);
+                canvas.DrawRect(orangeSquare3, paint);
+                canvas.Restore();
+            }    
         }
     }
 }
