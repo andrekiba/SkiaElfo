@@ -42,6 +42,7 @@
     <Compile Include="SkiaView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Fonts\compacta.ttf" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config" />
   </ItemGroup>
