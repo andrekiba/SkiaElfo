@@ -13,11 +13,10 @@ namespace SkiaElfo.Pages
         private static readonly SKColor Green = new SKColor(0x77, 0xd0, 0x65);
         private static readonly SKColor Purple = new SKColor(0xb4, 0x55, 0xb6);
 
-        public static string FontPath { get; set; }
-
         public ElfoLogoPage()
         {
             Content = new SkiaView(DrawElfoLogo);
+            //Content = new SkiaView(DrawElfoText);
         }
 
         public void DrawElfoLogo(SKCanvas canvas, int width, int height)
@@ -79,7 +78,6 @@ namespace SkiaElfo.Pages
                 canvas.Clear(Green);
 
                 paint.Color = SKColors.Black;
-                
                 canvas.DrawRect(blackSquare1, paint);
                 canvas.DrawRect(blackSquare2, paint);
                 canvas.DrawRect(blackSquare3, paint);
@@ -140,54 +138,53 @@ namespace SkiaElfo.Pages
                 canvas.RotateDegrees(-30);
                 canvas.DrawRect(orangeSquare3, paint);
                 canvas.Restore();
-            }    
+
+                const string text = "Elfo";
+                var assembly = typeof(ElfoLogoPage).GetTypeInfo().Assembly;
+                var fontName = assembly.GetName().Name + ".Fonts.compacta.ttf";
+
+                using (var resource = assembly.GetManifestResourceStream(fontName))
+                using (var stream = new SKManagedStream(resource))
+                using (var tf = SKTypeface.FromStream(stream))
+                {
+                    paint.Color = SKColors.Black;
+                    paint.TextSize = 60;
+                    paint.Typeface = tf;
+
+                    canvas.DrawText(text, 50, 150, paint);
+                }
+            }
         }
 
-        public void DrawElfoText(SKCanvas canvas, SKPoint lowerRight)
+        public void DrawElfoText(SKCanvas canvas, int width, int height)
         {
             const string text = "Elfo";
-            
             using (var paint = new SKPaint())
             {
+                canvas.Clear(SKColors.White);
                 paint.IsAntialias = true;
-                paint.Color = SKColors.Black;
 
-                //using (var tf = SKTypeface.FromFile(FontPath))
-                //{
-                //    paint.Color = Orange1;
-                //    paint.TextSize = 60;
-                //    paint.Typeface = tf;
+                using (var tf = SKTypeface.FromFile(ResourceUtility.FontPath))
+                {
+                    paint.Color = Orange2;
+                    paint.TextSize = 60;
+                    paint.Typeface = tf;
 
-                //    canvas.DrawText(text, 50, 50, paint);
-                //}
-
-                //using (var stream = new SKFileStream(FontPath))
-                //using (var tf = SKTypeface.FromStream(stream))
-                //{
-                //    paint.Color = Orange2;
-                //    paint.TextSize = 60;
-                //    paint.Typeface = tf;
-
-                //    canvas.DrawText(text, 50, 100, paint);
-                //}
+                    canvas.DrawText(text, 50, 150, paint);
+                }
 
                 var assembly = typeof(ElfoLogoPage).GetTypeInfo().Assembly;
                 var fontName = assembly.GetName().Name + ".Fonts.compacta.ttf";
 
                 using (var resource = assembly.GetManifestResourceStream(fontName))
-                using (var memory = new MemoryStream())
+                using (var stream = new SKManagedStream(resource))
+                using (var tf = SKTypeface.FromStream(stream))
                 {
-                    resource.CopyTo(memory);
-                    var bytes = memory.ToArray();
-                    using (var stream = new SKMemoryStream(bytes))
-                    using (var tf = SKTypeface.FromStream(stream))
-                    {
-                        paint.Color = SKColors.Black;
-                        paint.TextSize = 128;
-                        paint.Typeface = tf;
+                    paint.Color = Orange3;
+                    paint.TextSize = 60;
+                    paint.Typeface = tf;
 
-                        canvas.DrawText(text, lowerRight.X, lowerRight.Y, paint);
-                    }
+                    canvas.DrawText(text, 50, 200, paint);
                 }
             }
         }

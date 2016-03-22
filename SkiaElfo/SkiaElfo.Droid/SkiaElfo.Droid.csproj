@@ -115,6 +115,9 @@
     <Compile Include="SkiaViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="..\SkiaElfo\Fonts\compacta.ttf">
+      <Link>Assets\compacta.ttf</Link>
+    </AndroidAsset>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />

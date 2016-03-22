@@ -92,6 +92,10 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="NativeSkiaView.cs" />
     <Compile Include="SkiaViewRenderer.cs" />
+    <BundleResource Include="..\SkiaElfo\Fonts\compacta.ttf">
+      <Link>Resources\compacta.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </BundleResource>
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />

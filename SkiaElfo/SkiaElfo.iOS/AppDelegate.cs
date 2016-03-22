@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Foundation;
@@ -22,6 +23,10 @@ namespace SkiaElfo.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            // set up resource paths
+            string fontName = "compacta.ttf";
+            ResourceUtility.FontPath = NSBundle.MainBundle.PathForResource(Path.GetFileNameWithoutExtension(fontName), Path.GetExtension(fontName));
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 

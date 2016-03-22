@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.IO;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
@@ -14,6 +14,17 @@ namespace SkiaElfo.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
+            // set up resource paths
+            string fontName = "compacta.ttf";
+            string fontPath = Path.Combine(CacheDir.AbsolutePath, fontName);
+            using (var asset = Assets.Open(fontName))
+            using (var dest = File.Open(fontPath, FileMode.Create))
+            {
+                asset.CopyTo(dest);
+            }
+
+            ResourceUtility.FontPath = fontPath;
+
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
