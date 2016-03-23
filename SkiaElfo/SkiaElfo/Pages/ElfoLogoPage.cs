@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using SkiaSharp;
 using Xamarin.Forms;
@@ -16,15 +17,26 @@ namespace SkiaElfo.Pages
         public ElfoLogoPage()
         {
             Content = new SkiaView(DrawElfoLogo);
-            //Content = new SkiaView(DrawElfoText);
+
+            //var stack = new StackLayout
+            //{
+            //    Orientation = StackOrientation.Horizontal,
+            //    HorizontalOptions = LayoutOptions.CenterAndExpand
+            //};
+            //stack.Children.Add(new SkiaView(DrawElfoLogo));
+
+            //Content = stack;
         }
 
         public void DrawElfoLogo(SKCanvas canvas, int width, int height)
         {
             //dimensione totale quadrati
-            var totalSize = ((float)height > width ? width : height) * 0.5f;
+            var squareTotalSize = ((float)height > width ? width : height) * 0.25f;
             //dimensioni quadrato
-            var squareSize = totalSize / 3f;
+            var squareSize = squareTotalSize / 3f;
+            //dimensione totale logo
+            const int spacing = 20;
+            var logoTotalSize = squareTotalSize * 3f + spacing;
 
             /*
 
@@ -47,7 +59,7 @@ namespace SkiaElfo.Pages
 
             */
 
-            var p1 = new SKPoint((width - totalSize) / 2f, (height - totalSize) / 2f);
+            var p1 = new SKPoint((width - logoTotalSize) / 2f, (height - squareTotalSize) / 2f);
             var p2 = new SKPoint(p1.X + squareSize, p1.Y);
             var p3 = new SKPoint(p2.X + squareSize, p2.Y);
 
@@ -130,7 +142,9 @@ namespace SkiaElfo.Pages
                 canvas.Translate(p8.X - 5, p8.Y + 5);
                 canvas.RotateDegrees(-15);
                 canvas.DrawRect(orangeSquare2, paint);
+
                 canvas.Restore();
+                canvas.Save();
 
                 paint.Color = Orange3;
                 var orangeSquare3 = SKRect.Create(0, 0, squareSize, squareSize);
@@ -148,10 +162,10 @@ namespace SkiaElfo.Pages
                 using (var tf = SKTypeface.FromStream(stream))
                 {
                     paint.Color = SKColors.Black;
-                    paint.TextSize = 60;
+                    paint.TextSize = squareSize * 3.66f;
                     paint.Typeface = tf;
 
-                    canvas.DrawText(text, 50, 150, paint);
+                    canvas.DrawText(text, p9.X + squareSize + spacing, p9.Y + squareSize, paint);
                 }
             }
         }
