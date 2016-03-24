@@ -7,11 +7,11 @@ namespace SkiaElfo.iOS
 {
     public class NativeSkiaView : UIView
     {
-        const int bitmapInfo = ((int)CGBitmapFlags.ByteOrder32Big) | ((int)CGImageAlphaInfo.PremultipliedLast);
+        const int BitmapInfo = ((int)CGBitmapFlags.ByteOrder32Big) | ((int)CGImageAlphaInfo.PremultipliedLast);
 
-        readonly ISkiaViewController skiaView;
+        private readonly ISkiaViewController skiaView;
 
-        public NativeSkiaView(SkiaView skiaView)
+        public NativeSkiaView(ISkiaViewController skiaView)
         {
             this.skiaView = skiaView;
         }
@@ -24,7 +24,7 @@ namespace SkiaElfo.iOS
             var width = (int)(Bounds.Width * screenScale);
             var height = (int)(Bounds.Height * screenScale);
 
-            IntPtr buff = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(width * height * 4);
+            var buff = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(width * height * 4);
             try
             {
                 using (var surface = SKSurface.Create(width, height, SKColorType.N_32, SKAlphaType.Premul, buff, width * 4))
@@ -38,7 +38,7 @@ namespace SkiaElfo.iOS
                 }
 
                 using (var colorSpace = CGColorSpace.CreateDeviceRGB())
-                using (var bContext = new CGBitmapContext(buff, width, height, 8, width * 4, colorSpace, (CGImageAlphaInfo)bitmapInfo))
+                using (var bContext = new CGBitmapContext(buff, width, height, 8, width * 4, colorSpace, (CGImageAlphaInfo)BitmapInfo))
                 using (var image = bContext.ToImage())
                 using (var context = UIGraphics.GetCurrentContext())
                 {
